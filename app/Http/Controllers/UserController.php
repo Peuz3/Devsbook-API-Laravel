@@ -11,7 +11,7 @@ use Intervention\Image\Facades\Image;
 class UserController extends Controller
 {
     private $loggedUser;
-    
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -35,24 +35,17 @@ class UserController extends Controller
         //Fazendo a checagem item a item
 
         //NAME
-        if($name)
-        {
+        if ($name) {
             $user->name = $name;
-            
         }
 
         //E-MAIL
-        if($email)
-        {
-            if($email != $user->email)
-            {
+        if ($email) {
+            if ($email != $user->email) {
                 $emailExists = User::where('email', $email)->count();
-                if($emailExists === 0)
-                {
+                if ($emailExists === 0) {
                     $user->email = $email;
-                }
-                else
-                {
+                } else {
                     $array['error'] = 'E-mail já existe!';
                     return $array;
                 }
@@ -60,10 +53,8 @@ class UserController extends Controller
         }
 
         //BIRTHDATE
-        if($birthdate)
-        {
-            if(strtotime($birthdate) === false)
-            {
+        if ($birthdate) {
+            if (strtotime($birthdate) === false) {
                 $array['error'] = 'Data de nascimento inválida!';
                 return $array;
             }
@@ -72,27 +63,21 @@ class UserController extends Controller
         }
 
         //CITY
-        if($city)
-        {
+        if ($city) {
             $user->city = $city;
         }
 
         //WORK
-        if($work)
-        {
+        if ($work) {
             $user->work = $work;
         }
 
         //PASSWORD
-        if($password && $password_confirm)
-        {
-            if($password === $password_confirm)
-            {
+        if ($password && $password_confirm) {
+            if ($password === $password_confirm) {
                 $hash = password_hash($password, PASSWORD_DEFAULT);
                 $user->password = $hash;
-            }
-            else
-            {
+            } else {
                 $array['error'] = 'As senhas são distintas!';
             }
         }
@@ -104,38 +89,67 @@ class UserController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        $array = ['error'=>''];
+        $array = ['error' => ''];
         $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
         $image = $request->file('avatar');
 
-        if($image)
-        {
-            if(in_array($image->getClientMimeType(), $allowedTypes))
-            {
+        if ($image) {
+            if (in_array($image->getClientMimeType(), $allowedTypes)) {
                 //Gerando um nome randômico para a imagem
-                $filename = md5(time().rand(0,999)).'.jpg';
+                $filename = md5(time() . rand(0, 999)) . '.jpg';
 
                 $destPath = public_path('/media/avatars');
 
                 $img = Image::make($image->path())
-                        ->fit(200,200)
-                        ->save($destPath.'/'.$filename);
+                    ->fit(200, 200)
+                    ->save($destPath . '/' . $filename);
 
-                $user = User::find($this->loggedUser['id']); 
+                $user = User::find($this->loggedUser['id']);
                 $user->avatar = $filename;
                 $user->save();
-                
-                $array['url'] = url('/media/avatars/'.$filename);
-            }
-            else
-            {
+
+                $array['url'] = url('/media/avatars/' . $filename);
+            } else {
                 $array['error'] = 'Arquivo não suportado!';
                 return $array;
             }
+        } else {
+            $array['error'] = 'Arquivo não enviado!';
+            return $array;
         }
-        else
-        {
+
+        return $array;
+    }
+
+    public function updateCover(Request $request)
+    {
+        $array = ['error' => ''];
+        $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+
+        $image = $request->file('cover');
+
+        if ($image) {
+            if (in_array($image->getClientMimeType(), $allowedTypes)) {
+                //Gerando um nome randômico para a imagem
+                $filename = md5(time() . rand(0, 999)) . '.jpg';
+
+                $destPath = public_path('/media/covers');
+
+                $img = Image::make($image->path())
+                    ->fit(850, 310)
+                    ->save($destPath . '/' . $filename);
+
+                $user = User::find($this->loggedUser['id']);
+                $user->cover = $filename;
+                $user->save();
+
+                $array['url'] = url('/media/avatars/' . $filename);
+            } else {
+                $array['error'] = 'Arquivo não suportado!';
+                return $array;
+            }
+        } else {
             $array['error'] = 'Arquivo não enviado!';
             return $array;
         }

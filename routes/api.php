@@ -34,7 +34,7 @@ Route::post('/user/cover','App\Http\Controllers\UserController@updateCover');
 // Route::get('/user','App\Http\Controllers\UserController@read');
 // Route::get('/user/{id}','App\Http\Controllers\UserController@read');
 
-// Route::post('/feed', 'App\Http\Controllers\FeedController@create');
+Route::post('/feed', 'App\Http\Controllers\FeedController@create');
 
 // Route::post('/post/{id}/like', 'App\Http\Controllers\PostController@like');
 // Route::post('/post/{id}/comment', 'App\Http\Controllers\PostController@comment');

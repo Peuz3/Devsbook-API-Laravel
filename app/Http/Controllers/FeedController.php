@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostComment;
+use App\Models\PostLike;
+use App\Models\User;
+use App\Models\UserRelation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
@@ -37,30 +41,28 @@ class FeedController extends Controller
 
                 case 'photo':
                     if ($photo) {
-                        if(in_array($photo->getClientMimeType(),$allowedTypes)){
+                        if (in_array($photo->getClientMimeType(), $allowedTypes)) {
 
                             $filename = md5(time() . rand(0, 9999)) . '.jpg';
 
                             $destPath = public_path('media/uploads');
 
                             $img = Image::make($photo->path())
-                                ->resize(800,null, function($constraint){
+                                ->resize(800, null, function ($constraint) {
                                     $constraint->aspectRatio();
                                 })
                                 ->save($destPath . '/' . $filename);
 
-                           $body = $filename;     
-
-                        }else{
+                            $body = $filename;
+                        } else {
                             $array['error'] = 'Arquivo não suportado!';
                             return $array;
                         }
-
-                    }else{
+                    } else {
                         $array['error'] = 'Arquivo não enviado!';
-                        return $array; 
+                        return $array;
                     }
-                        
+
                     break;
 
                 default:
@@ -79,6 +81,16 @@ class FeedController extends Controller
         } else {
             $array['error'] = 'Dados não enviados!';
         }
+
+        return $array;
+    }
+
+    public function read(Request $request)
+    {
+        $array = ['error' => ''];
+
+        $page = intval($request->input('page'));
+        $perPage = 2;
 
         return $array;
     }

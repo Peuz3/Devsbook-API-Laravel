@@ -27,7 +27,7 @@ Route::put('/user', 'App\Http\Controllers\UserController@update');
 Route::post('/user/avatar','App\Http\Controllers\UserController@updateAvatar');
 Route::post('/user/cover','App\Http\Controllers\UserController@updateCover');
 
-// Route::get('/feed','App\Http\Controllers\FeedController@read');
+Route::get('/feed','App\Http\Controllers\FeedController@read');
 // Route::get('/user/feed', 'App\Http\Controllers\FeedController@userFeed');
 // Route::get('/user/{id}/feed','App\Http\Controllers\FeedController@userFeed');
 

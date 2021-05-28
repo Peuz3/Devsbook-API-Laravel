@@ -92,6 +92,40 @@ class FeedController extends Controller
         $page = intval($request->input('page'));
         $perPage = 2;
 
-        return $array;
+        $users = [];
+        $userList = UserRelation::where('user_from', $this->loggedUser['id'])->get();
+        foreach($userList as $userItem){
+            $users[] = $userItem['user_to'];
+        }
+
+        $users[] = $this->loggedUser['id'];
+
+        // 2. Pegar os Post pela Data em ordem decrescente
+
+        $postList = Post::whereIn('id_user', $users)
+            ->orderBy('created_at', 'desc')
+            ->offset($page * $perPage)
+            ->limit($perPage)
+            ->get();
+
+        $total = Post::whereIn('id_user', $users);
+        $pageCount = ceil($total / $perPage);
+        
+        // 3.  Preencher as informações adicionais
+
+        $posts = $this->_postListToObject($postList, $this->loggedUser['id']);
+        $array['posts'] = [];
+        $array['pageCount'] = $pageCount;
+        $array['currentPage'] = $page;
+
+        return $array;       
+    }
+
+    private function _postListToObject($postList, $idUser){
+
+
+
+        return $postList;
+            
     }
 }

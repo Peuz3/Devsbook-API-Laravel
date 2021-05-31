@@ -92,6 +92,7 @@ class FeedController extends Controller
         $page = intval($request->input('page'));
         $perPage = 2;
 
+        // 1. Pegar  a lista de usuários que sigo (incluindo a mim mesmo)
         $users = [];
         $userList = UserRelation::where('user_from', $this->loggedUser['id'])->get();
         foreach ($userList as $userItem) {
@@ -114,6 +115,38 @@ class FeedController extends Controller
         // 3.  Preencher as informações adicionais
 
         $posts = $this->_postListToObject($postList, $this->loggedUser['id']);
+
+        $array['posts'] = $posts;
+        $array['pageCount'] = $pageCount;
+        $array['currentPage'] = $page;
+
+        return $array;
+    }
+
+    public function userFeed(Request $request, $id = false)
+    {
+        $array = ['error' => ''];
+
+        if ($id == false) {
+            $id = $this->loggedUser['id'];
+        }
+
+        $page = intval($request->input('page'));
+        $perPage = 2;
+
+        //Pegar os posts ordenado pela data
+        $postList = Post::where('id_user', $id)
+            ->orderBy('created_at', 'desc')
+            ->offset($page * $perPage)
+            ->limit($perPage)
+            ->get();
+
+        $total = Post::where('id_user', $id)->count();
+        $pageCount = ceil($total / $perPage);
+
+        //Preencher as informações adicionadas
+        $posts = $this->_postListToObject($postList, $this->loggedUser['id']);
+
         $array['posts'] = $posts;
         $array['pageCount'] = $pageCount;
         $array['currentPage'] = $page;

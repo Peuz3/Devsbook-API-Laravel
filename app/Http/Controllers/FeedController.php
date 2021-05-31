@@ -127,7 +127,7 @@ class FeedController extends Controller
     {
         $array = ['error' => ''];
 
-        if ($id == false) {
+        if($id == false){
             $id = $this->loggedUser['id'];
         }
 

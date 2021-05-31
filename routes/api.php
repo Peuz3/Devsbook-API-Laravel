@@ -31,8 +31,8 @@ Route::get('/feed','App\Http\Controllers\FeedController@read');
 Route::get('/user/feed', 'App\Http\Controllers\FeedController@userFeed');
 Route::get('/user/{id}/feed','App\Http\Controllers\FeedController@userFeed');
 
-// Route::get('/user','App\Http\Controllers\UserController@read');
-// Route::get('/user/{id}','App\Http\Controllers\UserController@read');
+Route::get('/user','App\Http\Controllers\UserController@read');
+Route::get('/user/{id}','App\Http\Controllers\UserController@read');
 
 Route::post('/feed', 'App\Http\Controllers\FeedController@create');
 

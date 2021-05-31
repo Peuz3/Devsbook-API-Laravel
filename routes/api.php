@@ -36,7 +36,7 @@ Route::get('/user/{id}','App\Http\Controllers\UserController@read');
 
 Route::post('/feed', 'App\Http\Controllers\FeedController@create');
 
-// Route::post('/post/{id}/like', 'App\Http\Controllers\PostController@like');
+Route::post('/post/{id}/like', 'App\Http\Controllers\PostController@like');
 // Route::post('/post/{id}/comment', 'App\Http\Controllers\PostController@comment');
 
 // Route::post('/search','App\Http\Controllers\SearchController@search');

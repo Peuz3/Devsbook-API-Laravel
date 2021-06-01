@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,4 +38,4 @@ Route::post('/feed', 'App\Http\Controllers\FeedController@create');
 Route::post('/post/{id}/like', 'App\Http\Controllers\PostController@like');
 Route::post('/post/{id}/comment', 'App\Http\Controllers\PostController@comment');
 
-// Route::post('/search','App\Http\Controllers\SearchController@search');
+Route::get('/search','App\Http\Controllers\SearchController@search');

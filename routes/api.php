@@ -30,7 +30,7 @@ Route::get('/feed','App\Http\Controllers\FeedController@read');
 Route::get('/user/feed', 'App\Http\Controllers\FeedController@userFeed');
 Route::get('/user/{id}/feed','App\Http\Controllers\FeedController@userFeed');
 Route::post('/user/{id}/follow', 'App\Http\Controllers\UserController@follow');
-// Route::get('/user/{id}/followers', 'App\Http\Controllers\UserController@followers');
+Route::get('/user/{id}/followers', 'App\Http\Controllers\UserController@followers');
 // Route::get('/user/{id}/photos', 'App\Http\Controllers\UserController@photos');
 
 Route::get('/user','App\Http\Controllers\UserController@read');
